@@ -32,7 +32,10 @@ public class CarDealershipApplication implements CommandLineRunner {
 			System.out.println("1. List all vehicles");
 			System.out.println("2. Search vehicles by price range");
 			System.out.println("3. Search vehicles by make and model");
-			System.out.println("4. Exit");
+			System.out.println("4. Search vehicles by year");
+			System.out.println("5. Search vehicles by color");
+			System.out.println("6. Search vehicles by mileage");
+			System.out.println("7. Exit");
 			System.out.print("Enter your choice: ");
 			int choice = scanner.nextInt();
 			scanner.nextLine(); // Consume newline left-over
@@ -48,7 +51,7 @@ public class CarDealershipApplication implements CommandLineRunner {
 					searchByMakeAndModel(scanner);
 					break;
 				case 4:
-					running = false;
+					searchByYear(scanner);
 					break;
 				default:
 					System.out.println("Invalid choice. Please try again.");
@@ -85,6 +88,16 @@ public class CarDealershipApplication implements CommandLineRunner {
 		List<Vehicle> vehicles = vehicleRepository.findVehiclesByMakeAndModel(make, model);
 
 		System.out.println("Vehicles with make " + make + " and model " + model + ":");
+		vehicles.forEach(System.out::println);
+	}
+
+	private void searchByYear(Scanner scanner) {
+		System.out.print("Enter year: ");
+		int year = scanner.nextInt();
+
+		List<Vehicle> vehicles = vehicleRepository.findVehiclesByYear(year);
+
+		System.out.println("Vehicles with the year model " + year + ":");
 		vehicles.forEach(System.out::println);
 	}
 }

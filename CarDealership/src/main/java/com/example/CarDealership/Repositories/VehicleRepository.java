@@ -58,7 +58,6 @@ public class VehicleRepository {
         return vehicles;
     }
 
-    // Method to search vehicles by price range
     public List<Vehicle> findVehiclesByPriceRange(double minPrice, double maxPrice) {
         String query = "SELECT * FROM vehicles WHERE price BETWEEN ? AND ?";
         List<Vehicle> vehicles = new ArrayList<>();
@@ -77,7 +76,6 @@ public class VehicleRepository {
             }
 
         } catch (SQLException ex) {
-            // Handle the exception appropriately, e.g., log it
             ex.printStackTrace();
         }
 
@@ -102,7 +100,29 @@ public class VehicleRepository {
             }
 
         } catch (SQLException ex) {
-            // Handle the exception appropriately, e.g., log it
+            ex.printStackTrace();
+        }
+
+        return vehicles;
+    }
+
+    public List<Vehicle> findVehiclesByYear(int year) {
+        String query = "SELECT * FROM vehicles WHERE year = ?";
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, year);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Vehicle vehicle = mapRowToVehicle(rs);
+                    vehicles.add(vehicle);
+                }
+            }
+
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
